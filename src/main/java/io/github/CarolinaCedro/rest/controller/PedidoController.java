@@ -2,6 +2,8 @@ package io.github.CarolinaCedro.rest.controller;
 
 import io.github.CarolinaCedro.domain.entities.ItemPedido;
 import io.github.CarolinaCedro.domain.entities.Pedido;
+import io.github.CarolinaCedro.domain.enums.StatusPedido;
+import io.github.CarolinaCedro.rest.dto.AtualizacaoStatusPedidoDTO;
 import io.github.CarolinaCedro.rest.dto.InformacaoItemPedidoDTO;
 import io.github.CarolinaCedro.rest.dto.InformacoesPedidoDTO;
 import io.github.CarolinaCedro.rest.dto.PedidoDTO;
@@ -52,6 +54,14 @@ public class PedidoController {
                 .items(converter(pedido.getItens()))
                 .build();
 
+    }
+
+
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    private void updateStatus( @PathVariable Integer id,@RequestBody  AtualizacaoStatusPedidoDTO dto){
+        String novoStatus = dto.getNovoStatus();
+        service.atualizarStatus(id, StatusPedido.valueOf(novoStatus));
     }
 
     private List<InformacaoItemPedidoDTO> converter(List<ItemPedido> itens){
